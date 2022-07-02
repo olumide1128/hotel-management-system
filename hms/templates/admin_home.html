@@ -1,0 +1,52 @@
+
+{% extends 'admin_base.html' %}
+
+{% block title %}NOBLE Hotel Management System | Dashboard{% endblock %}
+
+{% block content %}
+        <h1 class="mt-2"> Welcome {{user.get_username}}!</h1>
+        <p class="mt-4">The Online Platform for Management of <b>Noble Hotel and Suites</b>. You can view Check-ins, Manage Staff, Manage Rooms and view bill history.</p>
+
+        <div class="row quick-links mt-5">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <a href="#">
+                    <div class="card text-center mt-2" id="quick-admin-manage">
+                        <div class="card-body p-5">
+                            <p class="card-text p-5">
+                                MANAGE ROOMS
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <a href="#">
+                    <div class="card text-center mt-2" id="quick-admin-view">
+                        <div class="card-body p-5">
+                            <p class="card-text p-5">
+                                VIEW CHECK-INS
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <a href="#">
+                    <div class="card text-center mt-2" id="quick-admin-history">
+                        <div class="card-body p-5">
+                            <p class="card-text p-5">
+                                VIEW BILL HISTORY
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+
+        </div>
+
+{% endblock %}
