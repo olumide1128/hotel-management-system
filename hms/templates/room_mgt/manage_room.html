@@ -1,0 +1,101 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}NOBLE Hotel Management System | Manage Room{% endblock %}
+
+
+{% block content %}
+	<div class="d-flex justify-content-between">
+		<h2>Room Management</h2>
+		<p><a href="#" class="btn btn-primary btn-block shadow-none staff-form-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa fa-plus"></i> Add Room</a></p>
+	</div>
+	
+	<br>
+	<table class="table table-responsive table-bordered table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Room Num</th>
+	      <th scope="col">Room Type</th>
+	      <th scope="col">Room Price</th>
+	      <th scope="col">Room Status</th>
+	      <th scope="col">Actions</th>
+	    </tr>
+	  </thead>
+	  <tbody class="table-body">
+	  	{% for room in rooms %}
+	    <tr>
+	      <th scope="row">{{room.room_num}}</th>
+	      <td>{{room.room_type}}</td>
+	      <td>{{room.room_price}}</td>
+	      <td>{{room.room_status}}</td>
+	      <td align="center">
+	      	<a href="#" class="btn btn-primary btn-block btn-sm shadow-none mx-2 staff-form-btn">UPDATE</a>
+	      	<a href="#" class="btn btn-warning btn-block btn-sm shadow-none">REMOVE</a>
+	      </td>
+	    </tr>
+	    {% endfor %}
+	  </tbody>
+	</table>
+
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Create New Staff</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<!-- Form Layout -->
+	        <form class="grid" action="{% url 'addStaff' %}" method="POST">
+
+				{% csrf_token %}
+
+	        	<div class="row mb-3">
+	        		<div class="col-md-6">
+	        			<input type="text" class="form-control" placeholder="firstname" name="firstname">
+	        		</div>
+	        	    <div class="col-md-6">
+	        			<input type="text" class="form-control" placeholder="lastname" name="lastname">
+	        		</div>
+	        	</div>
+	        	<div class="row mb-3">
+	        		<div class="col-md-12">
+	        			<input type="email" class="form-control" placeholder="email" name="email">
+	        		</div>
+	        	</div>
+	        	<div class="row mb-3">
+	        		<div class="col-md-12">
+	        			<input type="text" class="form-control" placeholder="address" name="address">
+	        		</div>
+	        	</div>
+	        	<div class="row mb-3">
+	        		<div class="col-md-6">
+	        			<input type="date" class="form-control" placeholder="dob" name="dob">
+	        		</div>
+	        		<div class="col-md-6">
+	        			<select class="form-select" name="department" id="department">
+	        				<option selected disabled="">Select Department</option>
+	        				<option value="Front-office">Front-Office</option>
+	        				<option value="Housekeeping">Housekeeping</option>
+	        				<option value="Accounts">Accounts</option>
+	        				<option value="Maintenance">Maintenance</option>
+	        			</select>
+	        		</div>
+	        	</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary staff-form-btn">Add</button>
+				</div>
+	        </form>
+	      
+	    </div>
+	  </div>
+	</div>
+
+
+
+{% endblock %}

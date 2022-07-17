@@ -1,0 +1,58 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}NOBLE Hotel Management System | Update Staff{% endblock %}
+
+
+{% block content %}
+	<div class="d-flex justify-content-between mb-4">
+		<h2>Update Staff Detail</h2>
+		<p><a href="{% url 'staffMgt' %}" class="btn btn-primary btn-block shadow-none staff-form-btn"><i class="fa fa-arrow-left"></i>  Go Back</a></p>
+	</div>
+	
+
+    <!-- Form Layout -->
+    <form class="grid" action="" method="post">
+
+        {% csrf_token %}
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="firstname" value="{{ employee.first_name }}" name="firstname">
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="lastname" value="{{ employee.last_name }}" name="lastname">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <input type="email" class="form-control" placeholder="email" value="{{ employee.email }}" name="email">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="address" value="{{ employee.Address }}" name="address">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <input type="date" class="form-control" placeholder="dob" value="{{emp_birth_date}}" name="dob">
+            </div>
+            <div class="col-md-6">
+                <select class="form-select" name="department" id="department">
+                    <option disabled="">Select Department</option>
+                    <option  {% if employee.department == 'Front-office' %} selected {% endif %} value="Front-office">Front-Office</option>
+                    <option {% if employee.department == 'Housekeeping' %} selected {% endif %} value="Housekeeping">Housekeeping</option>
+                    <option {% if employee.department == 'Accounts' %} selected {% endif %} value="Accounts">Accounts</option>
+                    <option {% if employee.department == 'Maintenance' %} selected {% endif %} value="Maintenance">Maintenance</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary staff-form-btn">Update</button>
+        </div>
+        
+    </form>
+
+
+
+{% endblock %}

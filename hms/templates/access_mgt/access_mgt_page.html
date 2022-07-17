@@ -1,0 +1,42 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}NOBLE Hotel Management System | Access Mgt{% endblock %}
+
+
+{% block content %}
+	<div class="d-flex justify-content-between">
+		<h2>Access Management</h2>
+		<p><a href="{% url 'staffMgt' %}" class="btn btn-primary btn-block shadow-none staff-form-btn"><i class="fa fa-plus"></i> Add Staff</a></p>
+	</div>
+	
+	<br>
+	<table class="table table-responsive table-bordered table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Staff Id</th>
+	      <th scope="col">Full Name</th>
+	      <th scope="col">Department</th>
+	      <th scope="col">Actions</th>
+	    </tr>
+	  </thead>
+	  <tbody class="table-body">
+	  	{% for emp in front_emp %}
+	    <tr>
+	      <th scope="row">{{emp.id}}</th>
+	      <td>{{emp.first_name}} {{emp.last_name}}</td>
+	      <td>{{emp.department}}</td>
+	      <td align="center">
+            {% if emp.access_granted %}
+	      	<a href="{% url 'revoke' emp.id %}" class="btn btn-danger btn-block btn-sm shadow-none">REVOKE ACCESS <i class="fa fa-ban"></i></a>
+            {% else %}
+            <a href="{% url 'grant' emp.id %}" class="btn btn-block btn-sm shadow-none mx-2 staff-form-btn">GRANT ACCESS  <i class="fa fa-check"></i></a>
+            {% endif %}
+	      </td>
+	    </tr>
+	    {% endfor %}
+	  </tbody>
+	</table>
+
+
+
+{% endblock %}

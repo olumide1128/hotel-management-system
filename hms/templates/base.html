@@ -31,7 +31,6 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">Available Rooms</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">Dirty Rooms</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">Billing</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">Staff Mgt</a>
                 </div>
             </div>
             <!-- Page content wrapper-->
@@ -44,7 +43,7 @@
                         <div id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                 <li class="nav-item px-2"><a class="nav-link" href="#!"><i class="fa fa-user"></i> {{user.get_username}}</a></li>
-                                <li class="nav-item px-2"><a class="nav-link" href="#!">Logout</a></li>
+                                <li class="nav-item px-2"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
                         </div>
                     </div>

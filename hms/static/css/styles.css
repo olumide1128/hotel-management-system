@@ -330,6 +330,11 @@ th {
   border-width: 0;
 }
 
+.table-body{
+    overflow: auto;
+    height: 100px;
+}
+
 label {
   display: inline-block;
 }
@@ -4122,6 +4127,13 @@ textarea.form-control-lg {
   border-radius: 0.25rem;
   transition: box-shadow 0.15s ease-in-out;
 }
+
+.staff-form-btn{
+  background-color: #22aae8 !important;
+  color: #ffffff !important;
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   .navbar-toggler {
     transition: none;

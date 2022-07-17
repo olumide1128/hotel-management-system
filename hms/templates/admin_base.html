@@ -25,11 +25,12 @@
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <div class="sidebar-heading border-bottom bg-light text-white"><i class="fa fa-bed"></i> NOBLE HOTEL MGT SYSTEM</div>
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">Dashboard</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="{% url 'home' %}">Dashboard</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">Check ins</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">Bill History</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">Staff Mgt</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">Room Mgt</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="{% url 'staffMgt' %}">Staff Mgt</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="{% url 'roomMgt' %}">Room Mgt</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="{% url 'accessMgt' %}">Access Mgt</a>
                 </div>
             </div>
             <!-- Page content wrapper-->
@@ -62,5 +63,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <!-- Core theme JS-->
         <script src="{% static 'js/scripts.js' %}"></script>
+
+
     </body>
 </html>
