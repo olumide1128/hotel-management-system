@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}NOBLE Hotel Management System | Dirty Room{% endblock %}
+
+
+{% block content %}
+	<div class="d-flex justify-content-between align-items-center">
+		<h2>Dirty Rooms</h2>
+        <div>
+            <span class="text-danger" id="searchErr"  style="display: none;">Enter a Search keyword!</span>
+            <form action="{% url 'dirtyRooms' %}" onsubmit="return searchValidate()" method="get" class="mx-2">
+                <div class="input-group">
+                    <input type="text" id="form1" class="form-control shadow-none" placeholder="Search by Room Num" name="q"/>
+                    <button type="submit" class="btn btn-primary input-group-text">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+	</div>
+	
+	<br>
+	<table class="table table-responsive table-bordered table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Room Num</th>
+	      <th scope="col">Room Type</th>
+	      <th scope="col">Room Price</th>
+	      <th scope="col">Room Status</th>
+	    </tr>
+	  </thead>
+	  <tbody class="table-body">
+        {% if messages %}
+            {% for message in messages %}
+                <td colspan="4" align="center"><b>{{message}}</b></td>
+            {% endfor %}
+        {% else %}
+            {% for room in rooms %}
+                <tr>
+                <th scope="row">{{room.room_num}}</th>
+                <td>{{room.room_type}}</td>
+                <td>{{room.room_price}}</td>
+                <td>{{room.room_status}}</td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+	  </tbody>
+	</table>
+
+
+
+
+{% endblock %}

@@ -15,4 +15,9 @@ urlpatterns = [
     path("grant_access/<int:id>", views.grant_access_view, name="grant"),
     path("revoke_access/<int:id>", views.revoke_access_view, name="revoke"),
     path("room_mgt/", views.manage_room_view, name="roomMgt"),
+    path("delete_room/<int:id>", views.delete_room_view, name="deleteRoom"),
+    path("update_room/<int:id>", views.update_room_view, name="updateRoom"),
+    path("add_room/", views.add_room_view, name="addRoom"),
+    path("available_rooms/", views.available_rooms_view, name="availableRooms"),
+    path("dirty_rooms/", views.dirty_rooms_view, name="dirtyRooms"),
 ]

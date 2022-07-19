@@ -1,0 +1,46 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}NOBLE Hotel Management System | Update Room{% endblock %}
+
+
+{% block content %}
+	<div class="d-flex justify-content-between mb-4">
+		<h2>Update Room Detail</h2>
+		<p><a href="{% url 'roomMgt' %}" class="btn btn-primary btn-block shadow-none staff-form-btn"><i class="fa fa-arrow-left"></i>  Go Back</a></p>
+	</div>
+	
+
+    <!-- Form Layout -->
+    <form class="grid" action="" method="post">
+
+        {% csrf_token %}
+        
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <input type="text" class="form-control" value="{{ room.room_num}}" name="roomNum" readonly>
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control" placeholder="Room Price" value="{{ room.room_price }}" name="roomPrice">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <select class="form-select" name="roomType" id="roomType">
+                    <option disabled="">Select Room Type</option>
+                    <option  {% if room.room_type == 'Single' %} selected {% endif %} value="Single">Single</option>
+                    <option {% if room.room_type == 'Double' %} selected {% endif %} value="Double">Double</option>
+                    <option {% if room.room_type == 'Deluxe' %} selected {% endif %} value="Deluxe">Deluxe</option>
+                    <option {% if room.room_type == 'Twin' %} selected {% endif %} value="Twin">Twin</option>
+                    <option {% if room.room_type == 'Executive' %} selected {% endif %} value="Executive">Executive</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary staff-form-btn">Update</button>
+        </div>
+        
+    </form>
+
+
+
+{% endblock %}

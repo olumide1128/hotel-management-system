@@ -173,8 +173,98 @@ def revoke_access_view(request, id):
 
 @login_required(login_url='/login')
 def manage_room_view(request):
-	rooms = Room.objects.all().order_by('room_num')
+    	
+	if request.method == 'GET' and 'q' in request.GET:
+		q = request.GET['q']
+		if q is not None and q != '':
+			rooms = Room.objects.filter(room_num=q)
+			if not rooms:	
+				messages.warning(request, "Room not found!")
+	else:
+		rooms = Room.objects.all().order_by('room_num')
+
 
 	context = {'rooms':rooms}
-
 	return render(request, 'room_mgt/manage_room.html', context)
+
+
+
+@login_required(login_url='/login')
+def delete_room_view(request, id):
+	room = Room.objects.get(room_num=id)
+	room.delete()
+
+	return redirect('/room_mgt')
+
+
+
+@login_required(login_url='/login')
+def update_room_view(request, id):
+
+	if request.method == 'POST':
+		roomNum = int(request.POST.get('roomNum'))
+		roomPrice = float(request.POST.get('roomPrice'))
+		roomType = request.POST.get('roomType')
+
+		old = Room.objects.get(room_num=id)
+		old.room_num = roomNum
+		old.room_price = roomPrice
+		old.room_type = roomType
+
+		old.save()
+		return redirect('/room_mgt')
+
+	room = Room.objects.get(room_num=id)
+
+	context = {'room':room}
+
+	return render(request, 'room_mgt/update_room.html', context)
+
+
+@login_required(login_url='/login')
+def add_room_view(request):
+	if request.method == 'POST':
+		roomNum = int(request.POST.get('roomNum'))
+		roomPrice = float(request.POST.get('roomPrice'))
+		roomType = request.POST.get('roomType')
+
+		new_room = Room.objects.create(room_num=roomNum, room_price=roomPrice, room_type=roomType, room_status='Available')
+		new_room.save()
+
+		return redirect('/room_mgt')
+
+
+@login_required(login_url='/login')
+def available_rooms_view(request):
+		
+	if request.method == 'GET' and 'q' in request.GET:
+		q = request.GET['q']
+		if q is not None and q != '':
+			rooms = Room.objects.filter(room_num=q, room_status='Available')
+			if not rooms:	
+				messages.warning(request, "Room not found!")	
+	else:
+		rooms = Room.objects.filter(room_status='Available').order_by('room_num')
+		if not rooms:	
+			messages.warning(request, "No Available Room!")
+	
+	context = {'rooms':rooms}
+	return render(request, 'regular_staff_templates/available_rooms.html', context)
+
+
+@login_required(login_url='/login')
+def dirty_rooms_view(request):
+		
+	if request.method == 'GET' and 'q' in request.GET:
+		q = request.GET['q']
+		if q is not None and q != '':
+			rooms = Room.objects.filter(room_num=q, room_status='Dirty')
+			if not rooms:	
+				messages.warning(request, "Room not found!")	
+	else:
+		rooms = Room.objects.filter(room_status='Dirty').order_by('room_num')
+		if not rooms:	
+			messages.warning(request, "No Dirty Room!")
+	
+	context = {'rooms':rooms}
+	return render(request, 'regular_staff_templates/dirty_rooms.html', context)

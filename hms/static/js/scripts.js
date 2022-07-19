@@ -25,3 +25,16 @@ window.addEventListener('DOMContentLoaded', event => {
 
 
 });
+
+
+//Search Validation for Empty Input
+function searchValidate(){
+    var search = document.getElementById('form1').value;
+    if(search == "" || search == null){
+        document.getElementById('searchErr').style.display = 'block';
+        console.log("Input is empty!");
+        return false;
+    }else{
+        return true;
+    }
+}
