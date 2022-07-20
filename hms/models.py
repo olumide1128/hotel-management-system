@@ -51,3 +51,31 @@ class Room(models.Model):
 
 	def __str__(self):
 		return "Room "+str(self.room_num)
+
+
+class Guest(models.Model):
+	guest_id = models.AutoField(primary_key=True)
+	first_name = models.CharField(max_length=50)
+	last_name = models.CharField(max_length=50)
+	phone = models.CharField(max_length=50)
+	Address = models.CharField(max_length=150)
+	card_num = models.CharField(max_length=50)
+	card_cvv = models.CharField(max_length=10)
+	card_expiry = models.CharField(max_length=20)
+
+
+	def __str__(self):
+		return f"{self.first_name} {self.last_name}"
+
+
+class Reservation(models.Model):
+	reserve_id= models.AutoField(primary_key=True)
+	guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
+	room = models.ForeignKey(Room, on_delete=models.CASCADE)
+	checkin_date = models.DateField()
+	checkout_date = models.DateField()
+	Num_of_persons = models.IntegerField()
+
+
+	def __str__(self):
+		return f"Reserve Id: {self.reserve_id}, Reservation for Room {self.room.room_num}"

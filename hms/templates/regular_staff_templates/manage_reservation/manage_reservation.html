@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}NOBLE Hotel Management System | Manage Reservation{% endblock %}
+
+
+{% block content %}
+	<div class="d-flex justify-content-between">
+		<h2>Reservation Management</h2>
+		<p><a href="#" class="btn btn-primary btn-block shadow-none staff-form-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa fa-plus"></i> New Reservation</a></p>
+	</div>
+	
+	<br>
+	<table class="table table-responsive table-bordered table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Reserve_id</th>
+	      <th scope="col">First name</th>
+	      <th scope="col">Last name</th>
+	      <th scope="col">Room Number</th>
+	      <th scope="col">Checkin</th>
+          <th scope="col">Checkout</th>
+          <th scope="col">Actions</th>
+	    </tr>
+	  </thead>
+	  <tbody class="table-body">
+        {% if messages %}
+            {% for message in messages %}
+                <td colspan="7" align="center"><b>{{message}}</b></td>
+            {% endfor %}
+        {% else %}
+            {% for reservation in reservations %}
+            <tr>
+            <th scope="row">{{reservation.reserve_id}}</th>
+            <td>{{reservation.guest.first_name}}</td>
+            <td>{{reservation.guest.last_name}}</td>
+            <td>{{reservation.room.room_num}}</td>
+            <td>{{reservation.checkin_date}}</td>
+            <td>{{reservation.checkout_date}}</td>
+            <td align="center">
+                <a href="{% url 'cancel' reservation.reserve_id %}" class="btn btn-success btn-block btn-sm shadow-none">CHECK IN</a>
+                <a href="{% url 'cancel' reservation.reserve_id %}" class="btn btn-warning btn-block btn-sm shadow-none">CANCEL</a>
+            </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+	  </tbody>
+	</table>
+
+
+
+	<!-- Modal -->
+	<div class="modal  fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-xl">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Create New Reservation</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<!-- Form Layout -->
+	        <form class="grid" action="{% url 'addReservation' %}" method="POST">
+
+				{% csrf_token %}
+				
+             
+				<div class="row mb-3">
+                    <!-- Guest Details -->
+					<div class="col-md-6">
+                        <h4 class="mb-2">Guest Details</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="First Name" name="firstName">
+                            </div> 
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Last Name" name="lastName">
+                            </div>            
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Phone Number" name="phone">
+                            </div> 
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Address" name="Address">
+                            </div>            
+                        </div>
+					</div>
+
+                    <!-- Room Details -->
+					<div class="col-md-6">
+                        <h4 class="mb-2">Room Details</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-5">
+                                <select class="form-select" name="roomType" id="roomType">
+                                    <option  selected disabled="">Select Room Type</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Double">Double</option>
+                                    <option value="Deluxe">Deluxe</option>
+                                    <option value="Twin">Twin</option>
+                                    <option value="Executive">Executive</option>
+                                </select>
+                            </div> 
+                            <div class="col-md-7">
+                                <select class="form-select" name="room" id="room">
+                                    <option  selected disabled="">Select Room</option>
+                                    {% for room in rooms %}
+                                        <option value="{{room.room_num}}">{{room.room_num}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>            
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <select class="form-select" name="no_of_persons" id="no_of_persons">
+                                    <option  selected disabled="">Select No of Persons</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div>            
+                        </div>
+					</div>
+				</div>
+                
+                <!-- Card Details -->
+				<div class="row mb-4">
+                    <div class="col-md-6">
+                        <h4 class="mb-2">Card Details</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" placeholder="Card Number" name="card_num">
+                            </div>            
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="CVV" name="card_cvv">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="mm/yyyy" name="card_expiry">
+                            </div>         
+                        </div>
+                    </div>
+
+                    
+                    <div class="col-md-6">
+                        <h4 class="mb-2">Duration</h4>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <p><b>Check In</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><b>Check Out</b></p>
+                            </div>         
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" id="Checkin" placeholder="Checkin" name="Checkin">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" placeholder="Checkout" name="Checkout">
+                            </div>         
+                        </div>
+                    </div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary staff-form-btn">Reserve</button>
+				</div>
+	        </form>
+	      
+	    </div>
+	  </div>
+	</div>
+
+
+
+{% endblock %}

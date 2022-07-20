@@ -20,4 +20,8 @@ urlpatterns = [
     path("add_room/", views.add_room_view, name="addRoom"),
     path("available_rooms/", views.available_rooms_view, name="availableRooms"),
     path("dirty_rooms/", views.dirty_rooms_view, name="dirtyRooms"),
+    path("manage_reservation/", views.manage_reservation_view, name="manageReserve"),
+    path("cancel_reservation/<int:id>", views.cancel_reservation_view, name="cancel"),
+    path("process_select/", views.handle_ajax_request, name="processSelect"),
+    path("add_reservation/", views.add_reservation_view, name="addReservation"),
 ]
