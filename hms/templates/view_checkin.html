@@ -1,25 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'admin_base.html' %}
 
-{% block title %}NOBLE Hotel Management System | Manage Reservation{% endblock %}
+{% block title %}NOBLE Hotel Management System | Checkins{% endblock %}
 
 
 {% block content %}
 	<div class="d-flex justify-content-between">
-		<h2>Reservation Management</h2>
-		<p><a href="#" class="btn btn-primary btn-block shadow-none staff-form-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa fa-plus"></i> New Reservation</a></p>
+		<h2>Check-ins</h2>
 	</div>
 	
 	<br>
 	<table class="table table-responsive table-bordered table-striped">
 	  <thead>
 	    <tr>
-	      <th scope="col">Reserve_id</th>
+	      <th scope="col">Checkin_id</th>
 	      <th scope="col">First name</th>
 	      <th scope="col">Last name</th>
 	      <th scope="col">Room Number</th>
 	      <th scope="col">Checkin</th>
           <th scope="col">Checkout</th>
-          <th scope="col">Actions</th>
 	    </tr>
 	  </thead>
 	  <tbody class="table-body">
@@ -28,18 +26,14 @@
                 <td colspan="7" align="center"><b>{{message}}</b></td>
             {% endfor %}
         {% else %}
-            {% for reservation in reservations %}
+            {% for checkin in checkins %}
             <tr>
-            <th scope="row">{{reservation.reserve_id}}</th>
-            <td>{{reservation.guest.first_name}}</td>
-            <td>{{reservation.guest.last_name}}</td>
-            <td>{{reservation.room.room_num}}</td>
-            <td>{{reservation.checkin_date}}</td>
-            <td>{{reservation.checkout_date}}</td>
-            <td align="center">
-                <a href="{% url 'checkin' reservation.reserve_id %}" class="btn btn-success btn-block btn-sm shadow-none">CHECK IN</a>
-                <a href="{% url 'cancel' reservation.reserve_id %}" class="btn btn-warning btn-block btn-sm shadow-none">CANCEL</a>
-            </td>
+            <th scope="row">{{checkin.checkin_id}}</th>
+            <td>{{checkin.guest.first_name}}</td>
+            <td>{{checkin.guest.last_name}}</td>
+            <td>{{checkin.room.room_num}}</td>
+            <td>{{checkin.checkin_date}}</td>
+            <td>{{checkin.checkout_date}}</td>
             </tr>
             {% endfor %}
         {% endif %}
@@ -53,12 +47,12 @@
 	  <div class="modal-dialog modal-xl">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Create New Reservation</h5>
+	        <h5 class="modal-title" id="exampleModalLabel">Checkin New Guest</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
 	      	<!-- Form Layout -->
-	        <form class="grid" action="{% url 'addReservation' %}" method="POST">
+	        <form class="grid" action="{% url 'addCheckin' %}" method="POST">
 
 				{% csrf_token %}
 				
@@ -165,7 +159,7 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary staff-form-btn">Reserve</button>
+					<button type="submit" class="btn btn-primary staff-form-btn">Checkin</button>
 				</div>
 	        </form>
 	      

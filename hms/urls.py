@@ -24,4 +24,9 @@ urlpatterns = [
     path("cancel_reservation/<int:id>", views.cancel_reservation_view, name="cancel"),
     path("process_select/", views.handle_ajax_request, name="processSelect"),
     path("add_reservation/", views.add_reservation_view, name="addReservation"),
+    path("manage_checkin/", views.manage_checkin_view, name="manageCheckin"),
+    path("checkout/<int:id>", views.checkout_view, name="checkout"),
+    path("checkin/<int:id>", views.checkin_view, name="checkin"),
+    path("add_checkin/", views.add_checkin_view, name="addCheckin"),
+    path("view_checkin/", views.view_checkin_view, name="viewCheckin"),
 ]

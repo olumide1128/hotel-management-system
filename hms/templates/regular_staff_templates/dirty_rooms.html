@@ -28,6 +28,7 @@
 	      <th scope="col">Room Type</th>
 	      <th scope="col">Room Price</th>
 	      <th scope="col">Room Status</th>
+          <th scope="col">Actions</th>
 	    </tr>
 	  </thead>
 	  <tbody class="table-body">
@@ -42,6 +43,9 @@
                 <td>{{room.room_type}}</td>
                 <td>{{room.room_price}}</td>
                 <td>{{room.room_status}}</td>
+                <td align="center">
+                    <a href="#" class="btn btn-warning btn-block btn-sm shadow-none">CLEAN</a>
+                </td>
                 </tr>
             {% endfor %}
         {% endif %}

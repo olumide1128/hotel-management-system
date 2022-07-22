@@ -79,3 +79,25 @@ class Reservation(models.Model):
 
 	def __str__(self):
 		return f"Reserve Id: {self.reserve_id}, Reservation for Room {self.room.room_num}"
+
+
+class Checkins(models.Model):
+	checkin_id= models.AutoField(primary_key=True)
+	guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
+	room = models.ForeignKey(Room, on_delete=models.CASCADE)
+	checkin_date = models.DateField()
+	checkout_date = models.DateField()
+	Num_of_persons = models.IntegerField()
+
+
+	def __str__(self):
+		return f"Checkin Id: {self.checkin_id}, Check-in for Room {self.room.room_num} ({self.room.room_type})"
+
+
+	def getBillAmount(self):
+		price = self.room.room_price
+		date_diff = self.checkout_date - self.checkin_date
+		duration = date_diff.days
+
+		amount = price * duration
+		return amount

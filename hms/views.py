@@ -1,13 +1,18 @@
+import os
 import random
 import string
 from django.http import HttpResponse, JsonResponse
+from django.template.loader import render_to_string
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .models import Employee, Guest, Reservation, Room
+from .models import Checkins, Employee, Guest, Reservation, Room
 import datetime
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 # Create your views here.
 
 @login_required(login_url='/login')
@@ -134,14 +139,20 @@ def grant_access_view(request, id):
 	username = firstname[0].upper()+lastname.lower()
 	password = generate_pass()
 
-	print(username, " : ", password)
+	#Send Email to Staff
+	to_name = firstname
+	to_email = email
+	to_password = password #Generated Password
+	to_username = username
+	email_subject = "ACCESS GRANTED"
+	email_template = 'granted_template.html'
 
-	#store to txt file
-	with open('details.txt', 'a') as f:
-		f.write(username+":"+password+"\n")
+	sendEmail(to_name, to_email, email_subject, email_template, to_password, to_username)
+
 
 	#Create User account for this Employee
 	User.objects.create_user(username=username, password=password, email=email, first_name=firstname, last_name=lastname)
+	
 	return redirect('/access_mgt')
 
 
@@ -168,7 +179,41 @@ def revoke_access_view(request, id):
 	user = User.objects.filter(first_name=emp.first_name, last_name=emp.last_name)
 	user.delete()
 
+	#Send Email to Staff
+	to_name = emp.first_name
+	to_email = emp.email
+	email_subject = "ACCESS REVOKED"
+	email_template = 'revoke_template.html'
+
+	sendEmail(to_name, to_email, email_subject, email_template)
+
 	return redirect('/access_mgt')
+
+
+def sendEmail(to_name, to_email, email_subject, email_template, password="", username=""):
+    	
+	context = { 
+		'Name':to_name,
+		'password':password,
+		'username':username
+	}
+
+	message = Mail(
+		from_email='Admin <olumide.oyegoke@gmail.com>',
+		to_emails=to_email,
+		subject=email_subject,
+		html_content= render_to_string(email_template, context)
+	)
+
+
+	try:
+		sg = SendGridAPIClient(os.environ.get('SENDGRID_API'))
+		response = sg.send(message)
+		print(response.status_code)
+		print(response.body)
+		print(response.headers)
+	except Exception as e:
+		print(e)
 
 
 
@@ -337,8 +382,112 @@ def add_reservation_view(request):
 
 
 
-def handle_ajax_request(request):
+@login_required(login_url='/login')
+def manage_checkin_view(request):
+    
+	checkins = Checkins.objects.all()
 
+	if not checkins:	
+		context = {}
+		messages.warning(request, "No Check in Yet!")
+	else:
+		context = {'checkins': checkins}
+
+	return render(request, 'regular_staff_templates/manage_checkin/manage_checkin.html', context)
+
+
+
+@login_required(login_url='/login')
+def view_checkin_view(request):
+    
+	checkins = Checkins.objects.all()
+
+	if not checkins:	
+		context = {}
+		messages.warning(request, "No Check in Yet!")
+	else:
+		context = {'checkins': checkins}
+
+	return render(request, 'view_checkin.html', context)
+
+
+
+def add_checkin_view(request):
+    	
+	if request.method == 'POST':
+		first_name = request.POST.get('firstName')
+		last_name = request.POST.get('lastName')
+		phone = request.POST.get('phone')
+		Address = request.POST.get('Address')
+		card_num = request.POST.get('card_num')
+		card_cvv = request.POST.get('card_cvv')
+		card_expiry = request.POST.get('card_expiry')
+
+		room_num = request.POST.get('room')
+		no_of_persons = request.POST.get('no_of_persons')
+
+		Checkin = toDateObject(request.POST.get('Checkin'))
+		Checkout = toDateObject(request.POST.get('Checkout'))
+		
+
+	#Check if guest exist or create new record
+	try:
+		guest = Guest.objects.get(first_name=first_name, last_name=last_name)
+	except Guest.DoesNotExist:
+		guest = Guest(first_name=first_name, last_name=last_name, phone=phone, Address=Address, card_num=card_num, card_cvv=card_cvv, card_expiry=card_expiry)
+		guest.save()
+
+	#Get room object by room num
+	room = Room.objects.get(room_num=room_num)
+	room.room_status = 'Occupied' #Change status of room to Booked
+	room.save()
+
+	#Create the Reservation object
+	Checkins.objects.create(guest=guest, room=room, checkin_date=Checkin, checkout_date=Checkout, Num_of_persons=no_of_persons)
+
+	return redirect('/manage_checkin')
+
+
+
+def checkout_view(request, id):
+	checkins = Checkins.objects.get(checkin_id=id)
+
+	#Change room status to Occupied
+	checkins.room.room_status = 'Dirty'
+	checkins.room.save()
+
+	#Then Delete the Checkin instance
+	checkins.delete()
+
+	return redirect('/manage_checkin')
+
+
+def checkin_view(request, id):
+
+	reservation = Reservation.objects.get(reserve_id=id)
+
+	#Change room status to Occupied
+	reservation.room.room_status = 'Occupied'
+	reservation.room.save()
+
+	#Get field values
+	guest = reservation.guest
+	room = reservation.room
+	no_of_persons = reservation.Num_of_persons
+	checkin_date = reservation.checkin_date
+	checkout_date = reservation.checkout_date
+
+	#Create Checkin object with Reservation Values
+	Checkins.objects.create(guest=guest, room=room, checkin_date=checkin_date, checkout_date=checkout_date, Num_of_persons=no_of_persons)
+
+	#Delete resrvation instance
+	reservation.delete()
+
+	return redirect('/manage_reservation')
+
+
+
+def handle_ajax_request(request):
 	value = request.POST['valueSelected']
 	
 	room_filter = Room.objects.filter(room_type=value, room_status='Available').order_by('room_num');
