@@ -6,21 +6,22 @@
 {% block content %}
 	<div class="d-flex justify-content-between mb-4">
 		<h2>Update Room Detail</h2>
+        <div class="alert alert-sm alert-danger mt-3 mx-2" role="alert" id="errBox"><strong id="errMsg"></strong></div>
 		<p><a href="{% url 'roomMgt' %}" class="btn btn-primary btn-block shadow-none staff-form-btn"><i class="fa fa-arrow-left"></i>  Go Back</a></p>
 	</div>
 	
 
     <!-- Form Layout -->
-    <form class="grid" action="" method="post">
+    <form class="grid" action="" onsubmit="return validateRoomForm();" method="post">
 
         {% csrf_token %}
         
         <div class="row mb-3">
             <div class="col-md-4">
-                <input type="text" class="form-control" value="{{ room.room_num}}" name="roomNum" readonly>
+                <input type="text" class="form-control" value="{{ room.room_num}}" name="roomNum" id="roomNum" readonly>
             </div>
             <div class="col-md-8">
-                <input type="text" class="form-control" placeholder="Room Price" value="{{ room.room_price }}" name="roomPrice">
+                <input type="text" class="form-control" placeholder="Room Price" value="{{ room.room_price }}" name="roomPrice" id="roomPrice">
             </div>
         </div>
         <div class="row mb-4">

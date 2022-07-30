@@ -1,12 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'admin_base.html' %}
 
-{% block title %}NOBLE Hotel Management System | Dirty Room{% endblock %}
+{% block title %}NOBLE Hotel Management System | Billing History{% endblock %}
 
 
 {% block content %}
 	<div class="d-flex justify-content-between align-items-center">
-		<h2>Dirty Rooms</h2>
-        <div>
+		<h2>Billing History</h2>
+        <!-- <div>
             <span class="text-danger" id="searchErr"  style="display: none;">Enter a Search keyword!</span>
             <form action="{% url 'dirtyRooms' %}" onsubmit="return searchValidate()" method="get" class="mx-2">
                 <div class="input-group">
@@ -16,7 +16,7 @@
                     </button>
                 </div>
             </form>
-        </div>
+        </div> -->
 
 	</div>
 	
@@ -24,27 +24,36 @@
 	<table class="table table-responsive table-bordered table-striped">
 	  <thead>
 	    <tr>
+	      <th scope="col">Bill Id</th>
+	      <th scope="col">Guest Id</th>
 	      <th scope="col">Room Num</th>
 	      <th scope="col">Room Type</th>
-	      <th scope="col">Room Price</th>
-	      <th scope="col">Room Status</th>
+	      <th scope="col">Amount</th>
+	      <th scope="col">Checkin</th>
+	      <th scope="col">Checkout</th>
+	      <th scope="col">Bill Date</th>
           <th scope="col">Actions</th>
 	    </tr>
 	  </thead>
 	  <tbody class="table-body">
         {% if messages %}
             {% for message in messages %}
-                <td colspan="5" align="center"><b>{{message}}</b></td>
+                <td colspan="9" align="center"><b>{{message}}</b></td>
             {% endfor %}
         {% else %}
-            {% for room in rooms %}
+            {% for bill in bills %}
                 <tr>
-                <th scope="row">{{room.room_num}}</th>
-                <td>{{room.room_type}}</td>
-                <td>{{room.room_price}}</td>
-                <td>{{room.room_status}}</td>
+                <th scope="row">{{bill.bill_id}}</th>
+                <td>{{bill.guest.guest_id}}</td>
+                <td>{{bill.room.room_num}}</td>
+                <td>{{bill.room.room_type}}</td>
+                <td>{{bill.amount}}</td>
+                <td>{{bill.checkin_date}}</td>
+                <td>{{bill.checkout_date}}</td>
+                <td>{{bill.billing_date | date:"d/m/Y" }}</td>
                 <td align="center">
-                    <a href="{% url 'cleanRoom' room.room_num %}" class="btn btn-warning btn-block btn-sm shadow-none">CLEAN</a>
+                    <a href="#" class="btn btn-warning btn-block btn-sm shadow-none"><b>PRINT</b></a>
+                    <a href="{% url 'deleteBill' bill.bill_id %}" class="btn btn-danger btn-block btn-sm shadow-none"><b><i class="fa fa-trash"></i></b></a>
                 </td>
                 </tr>
             {% endfor %}

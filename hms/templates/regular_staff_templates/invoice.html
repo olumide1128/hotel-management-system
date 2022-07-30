@@ -1,0 +1,131 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Guest Invoice</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'css\invoice.css' %}">
+    </head>
+
+    <body>
+        <div class="col-md-12">   
+            <div class="row">
+                   
+                   <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+                       <div class="row">
+                           <div class="receipt-header">
+                               <div class="col-xs-6 col-sm-6 col-md-6">
+                                   <div class="receipt-left">
+                                       <img class="img-responsive" alt="iamgurdeeposahan" src="{% static 'icon\icon.png' %}" style="width: 71px;">
+                                   </div>
+                               </div>
+                               <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                   <div class="receipt-right">
+                                       <h5 style="color: #25aae8;">NOBLE HOTEL</h5>
+                                       <p>+1 3649-6589 <i class="fa fa-phone"></i></p>
+                                       <p>noble@gmail.com <i class="fa fa-envelope-o"></i></p>
+                                       <p>Dublin, Ireland <i class="fa fa-location-arrow"></i></p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       
+                       <div class="row">
+                           <div class="receipt-header receipt-header-mid">
+                               <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                                   <div class="receipt-right">
+                                       <h5>{{bill.guest.first_name}} {{bill.guest.last_name}}</h5>
+                                       <p><b>Mobile :</b> {{bill.guest.phone}}</p>
+                                       <p><b>Address :</b> {{bill.guest.Address}}</p>
+                                   </div>
+                               </div>
+                               <div class="col-xs-4 col-sm-4 col-md-4">
+                                   <div class="receipt-left">
+                                       <h3>INVOICE # {{bill.bill_id}}</h3>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       
+                       <div>
+                           <table class="table table-bordered">
+                               <thead>
+                                   <tr>
+                                       <th>Description</th>
+                                       <th>Quantity</th>
+                                       <th>Rate</th>
+                                       <th>Amount</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <tr>
+                                       <td class="col-md-4">Room {{bill.room.room_num}} ({{bill.room.room_type}})</td>
+                                       <td class="col-md-2">{{duration}} Nights</td>
+                                       <td class="col-md-3">&euro;{{bill.room.room_price}}/Night</td>
+                                       <td class="col-md-3">&euro;{{bill.amount}}</td>
+                                   </tr>
+                                   <tr>
+                                       <td class="col-md-4"></td>
+                                       <td class="col-md-2"></td>
+                                       <td class="col-md-3"></td>
+                                       <td class="col-md-3"></td>
+                                   </tr>
+                                   <tr>
+                                       <td class="col-md-4"></td>
+                                       <td class="col-md-2"></td>
+                                       <td class="col-md-3"></td>
+                                       <td class="col-md-3"></td>
+                                   </tr>
+                                   <tr>
+                                       <td class="col-md-4"></td>
+                                       <td class="col-md-2"></td>
+           
+                                       <td class="text-right">
+                                       <p>
+                                           <strong>Sub Total: </strong>
+                                       </p>
+                                       <p>
+                                           <strong>Tax: </strong>
+                                       </p>
+                                       </td>
+                                       <td>
+                                       <p>
+                                           <strong><i class="fa fa-inr"></i>&euro;{{bill.amount}}</strong>
+                                       </p>
+                                       <p>
+                                           <strong><i class="fa fa-inr"></i>&euro;10.0</strong>
+                                       </p>
+                                       <p>
+                                       </td>
+                                   </tr>
+                                   <tr>
+                                       <td class="col-md-4"></td>
+                                       <td class="col-md-2"></td>
+                                       <td class="text-right"><h2 style="color: #25aae8;"><strong>Grand Total: </strong></h2></td>
+                                       <td class="text-left"><h4><strong><i class="fa fa-inr"></i>&euro;{{total}}</strong></h4></td>
+                                   </tr>
+                               </tbody>
+                           </table>
+                       </div>
+                       
+                       <div class="row">
+                           <div class="receipt-header receipt-header-mid receipt-footer">
+                               <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                                   <div class="receipt-right">
+                                       <p><b>Date :</b> {{bill.billing_date}}</p>
+                                       <h5 style="color: rgb(140, 140, 140);">We Hope you had a Great Stay!</h5>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       
+                   </div>    
+               </div>
+           </div>
+
+    </body>
+</html>

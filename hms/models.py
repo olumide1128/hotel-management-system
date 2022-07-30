@@ -1,4 +1,12 @@
+import os
 from django.db import models
+import stripe
+from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables from .env.
+
+stripe.api_key=os.environ.get('STRIPE_API_KEY')
+
 
 # Create your models here.
 
@@ -100,4 +108,47 @@ class Checkins(models.Model):
 		duration = date_diff.days
 
 		amount = price * duration
-		return amount
+
+		bill_amount = amount + 10 #10 for tax
+		return bill_amount
+
+
+class Billing(models.Model):
+	bill_id= models.AutoField(primary_key=True)
+	guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
+	room = models.ForeignKey(Room, on_delete=models.CASCADE)
+	amount = models.FloatField()
+	checkin_date = models.DateField()
+	checkout_date = models.DateField()
+	billing_date = models.DateField()
+	
+	
+	def __str__(self):
+		return f"Billing for Guest Id: {self.guest.guest_id} and Room Num: {self.room.room_num}"
+
+	
+	def getNoOfDays(self):
+		date_diff = self.checkout_date - self.checkin_date
+		duration = date_diff.days
+
+		return duration
+
+
+	def generate_card_token(self):
+
+		#Get Card Details
+		cardnumber = self.guest.card_num
+		cvv = self.guest.card_cvv
+		expmonth, expyear = self.guest.card_expiry.split("/")
+
+		data = stripe.Token.create(
+		card={
+			"number": str(cardnumber),
+			"exp_month": int(expmonth),
+			"exp_year": int(expyear),
+			"cvc": str(cvv),
+		})
+
+		card_token = data['id']
+
+		return card_token

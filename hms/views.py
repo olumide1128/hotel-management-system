@@ -8,10 +8,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .models import Checkins, Employee, Guest, Reservation, Room
+import stripe
+from .models import Billing, Checkins, Employee, Guest, Reservation, Room
 import datetime
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables from .env.
+
+stripe.api_key=os.environ.get('STRIPE_API_KEY')
 
 # Create your views here.
 
@@ -100,7 +106,6 @@ def delete_staff_view(request, id):
 	return redirect('/staff_mgt')
 
 
-@login_required(login_url='/login')
 def add_staff_view(request):
 	if request.method == 'POST':
 
@@ -317,16 +322,28 @@ def dirty_rooms_view(request):
 
 
 @login_required(login_url='/login')
+def clean_room_view(request, id):
+	room = Room.objects.get(room_num=id)
+	room.room_status = 'Available'
+
+	room.save()
+
+	return redirect('/dirty_rooms')
+
+
+
+@login_required(login_url='/login')
 def manage_reservation_view(request):
     
 	reservations = Reservation.objects.all()
 	rooms = Room.objects.filter(room_status='Available').order_by('room_num')
+	guests = Guest.objects.all()
 
 	if not reservations:
-		context = {'rooms':rooms}	
+		context = {'rooms':rooms, 'guests':guests}	
 		messages.warning(request, "No Reserved Room!")
 		
-	context = {'reservations': reservations, 'rooms':rooms}
+	context = {'reservations': reservations, 'rooms':rooms, 'guests':guests}
 	return render(request, 'regular_staff_templates/manage_reservation/manage_reservation.html', context)
 
 
@@ -385,13 +402,16 @@ def add_reservation_view(request):
 @login_required(login_url='/login')
 def manage_checkin_view(request):
     
+	print(stripe.api_key)
+
 	checkins = Checkins.objects.all()
+	guests = Guest.objects.all()
 
 	if not checkins:	
-		context = {}
+		context = {'guests':guests}
 		messages.warning(request, "No Check in Yet!")
 	else:
-		context = {'checkins': checkins}
+		context = {'checkins': checkins, 'guests':guests}
 
 	return render(request, 'regular_staff_templates/manage_checkin/manage_checkin.html', context)
 
@@ -450,16 +470,54 @@ def add_checkin_view(request):
 
 
 def checkout_view(request, id):
-	checkins = Checkins.objects.get(checkin_id=id)
+	checkin = Checkins.objects.get(checkin_id=id)
 
-	#Change room status to Occupied
-	checkins.room.room_status = 'Dirty'
-	checkins.room.save()
+	#Get Bill Amount for Check-in
+	bill_amount = checkin.getBillAmount()
+	print(bill_amount)
 
-	#Then Delete the Checkin instance
-	checkins.delete()
+	#Get other details
+	guest = checkin.guest
+	room = checkin.room
+	checkin_date = checkin.checkin_date
+	checkout_date = checkin.checkout_date
+	billing_date = checkout_date
 
-	return redirect('/manage_checkin')
+	#Create the Bill Instance
+	bill = Billing.objects.create(guest=guest, room=room, amount=bill_amount, checkin_date=checkin_date, checkout_date=checkout_date, billing_date=billing_date)
+
+	token_id = bill.generate_card_token()
+
+	payment = stripe.Charge.create(
+			amount= int(bill_amount)*100,  # convert amount to cents
+			currency='eur',
+			description='Hotel Bill',
+			source=token_id,
+			)
+
+	payment_check = payment['paid']    # return True for successfull payment
+
+	print(payment_check)
+	
+	#Check if Payment was successful or not
+	if(payment_check):
+		#Change room status to Dirty
+		checkin.room.room_status = 'Dirty'
+		checkin.room.save()
+
+		#Then Delete the Checkin instance
+		checkin.delete()
+
+		messages.success(request, "Card Charged Successfully!")
+
+		return redirect('/manage_checkin')
+	else:
+    	#Delete the Bill instance
+		bill.delete()
+
+		messages.error(request, "Card Charge Failed!")
+
+		return redirect('/manage_checkin')
 
 
 def checkin_view(request, id):
@@ -487,6 +545,42 @@ def checkin_view(request, id):
 
 
 
+@login_required(login_url='/login')
+def billing_view(request):
+		
+	bills = Billing.objects.all()
+	if not bills:	
+		messages.warning(request, "No Bill Available!")
+	
+	context = {'bills':bills}
+	return render(request, 'regular_staff_templates/billing.html', context)
+
+
+
+@login_required(login_url='/login')
+def admin_billing_view(request):
+		
+	bills = Billing.objects.all()
+	if not bills:	
+		messages.warning(request, "No Bill Available!")
+	
+	context = {'bills':bills}
+	return render(request, 'admin_billing.html', context)
+
+
+
+@login_required(login_url='/login')
+def delete_bill_view(request, id):
+	bill = Billing.objects.get(bill_id=id)
+	bill.delete()
+
+	user_name = request.user.username
+	if user_name == "admin":
+		return redirect('/admin_billing')
+	else:
+		return redirect('/billing')
+
+
 def handle_ajax_request(request):
 	value = request.POST['valueSelected']
 	
@@ -496,9 +590,51 @@ def handle_ajax_request(request):
 	return JsonResponse({"rooms":rooms})
 
 
+def handle_ajax_request2(request):
+	value = request.POST['valueSelected']
+	print(value)
+
+	if value == "Select Existing Guest":
+		data = {
+			'first_name':"",
+			'last_name':"",
+			'phone':"",
+			'Address':"",
+			'card_num':"",
+			'card_cvv':"",
+			'card_expiry':""
+		}
+	else:
+		guest = Guest.objects.get(guest_id=value)
+
+		data = {
+			'first_name':guest.first_name,
+			'last_name':guest.last_name,
+			'phone':guest.phone,
+			'Address':guest.Address,
+			'card_num':guest.card_num,
+			'card_cvv':guest.card_cvv,
+			'card_expiry':guest.card_expiry
+		}
+
+	return JsonResponse(data)
+
 
 def toDateObject(x):
 	y, m, d = [int(part) for part in x.split("-")]
 	date_obj = datetime.date(y, m, d)
 
 	return date_obj
+
+
+
+def invoice_view(request, id):
+    
+	bill = Billing.objects.get(bill_id=id)
+
+	duration = bill.getNoOfDays()
+	total = bill.amount + 10 #10 is tax
+
+	context = {"bill":bill, "duration":duration, "total":total}
+
+	return render(request, 'regular_staff_templates/invoice.html', context)

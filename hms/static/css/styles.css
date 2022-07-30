@@ -4134,6 +4134,10 @@ textarea.form-control-lg {
 }
 
 
+#errBox{
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .navbar-toggler {
     transition: none;

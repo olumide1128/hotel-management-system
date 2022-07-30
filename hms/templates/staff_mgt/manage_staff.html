@@ -40,44 +40,45 @@
 
 	<!-- Modal -->
 	<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">Create New Staff</h5>
+			<div class="alert alert-danger mt-3 mx-5" id="errBox"><strong id="errMsg"></strong></div>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
 	      	<!-- Form Layout -->
-	        <form class="grid" action="{% url 'addStaff' %}" method="POST">
+	        <form class="grid" onsubmit="return validateStaffForm();" action="{% url 'addStaff' %}"   method="POST">
 
 				{% csrf_token %}
 
 	        	<div class="row mb-3">
 	        		<div class="col-md-6">
-	        			<input type="text" class="form-control" placeholder="firstname" name="firstname">
+	        			<input type="text" class="form-control" placeholder="firstname" name="firstname" id="firstname">
 	        		</div>
 	        	    <div class="col-md-6">
-	        			<input type="text" class="form-control" placeholder="lastname" name="lastname">
+	        			<input type="text" class="form-control" placeholder="lastname" name="lastname" id="lastname">
 	        		</div>
 	        	</div>
 	        	<div class="row mb-3">
 	        		<div class="col-md-12">
-	        			<input type="email" class="form-control" placeholder="email" name="email">
+	        			<input type="text" class="form-control" placeholder="email" name="email" id="email">
 	        		</div>
 	        	</div>
 	        	<div class="row mb-3">
 	        		<div class="col-md-12">
-	        			<input type="text" class="form-control" placeholder="address" name="address">
+	        			<input type="text" class="form-control" placeholder="address" name="address" id="address">
 	        		</div>
 	        	</div>
 	        	<div class="row mb-3">
 	        		<div class="col-md-6">
-	        			<input type="date" class="form-control" placeholder="dob" name="dob">
+	        			<input type="date" class="form-control" placeholder="dob" name="dob" id="dob">
 	        		</div>
 	        		<div class="col-md-6">
 	        			<select class="form-select" name="department" id="department">
-	        				<option selected disabled="">Select Department</option>
-	        				<option value="Front-office">Front-Office</option>
+	        				<option value="Select Department" selected disabled="">Select Department</option>
+	        				<option value="Front-Office">Front-Office</option>
 	        				<option value="Housekeeping">Housekeeping</option>
 	        				<option value="Accounts">Accounts</option>
 	        				<option value="Maintenance">Maintenance</option>

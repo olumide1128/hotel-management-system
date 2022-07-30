@@ -6,41 +6,42 @@
 {% block content %}
 	<div class="d-flex justify-content-between mb-4">
 		<h2>Update Staff Detail</h2>
+        <div class="alert alert-danger mt-3 mx-5" id="errBox"><strong id="errMsg"></strong></div>
 		<p><a href="{% url 'staffMgt' %}" class="btn btn-primary btn-block shadow-none staff-form-btn"><i class="fa fa-arrow-left"></i>  Go Back</a></p>
 	</div>
 	
 
     <!-- Form Layout -->
-    <form class="grid" action="" method="post">
+    <form class="grid" onsubmit="return validateStaffForm();" action="" method="post">
 
         {% csrf_token %}
         
         <div class="row mb-3">
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="firstname" value="{{ employee.first_name }}" name="firstname">
+                <input type="text" class="form-control" placeholder="firstname" value="{{ employee.first_name }}" name="firstname" id="firstname">
             </div>
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="lastname" value="{{ employee.last_name }}" name="lastname">
+                <input type="text" class="form-control" placeholder="lastname" value="{{ employee.last_name }}" name="lastname" id="lastname">
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-12">
-                <input type="email" class="form-control" placeholder="email" value="{{ employee.email }}" name="email">
+                <input type="email" class="form-control" placeholder="email" value="{{ employee.email }}" name="email" id="email">
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-12">
-                <input type="text" class="form-control" placeholder="address" value="{{ employee.Address }}" name="address">
+                <input type="text" class="form-control" placeholder="address" value="{{ employee.Address }}" name="address" id="address">
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-md-6">
-                <input type="date" class="form-control" placeholder="dob" value="{{emp_birth_date}}" name="dob">
+                <input type="date" class="form-control" placeholder="dob" value="{{emp_birth_date}}" name="dob" id="dob">
             </div>
             <div class="col-md-6">
                 <select class="form-select" name="department" id="department">
-                    <option disabled="">Select Department</option>
-                    <option  {% if employee.department == 'Front-office' %} selected {% endif %} value="Front-office">Front-Office</option>
+                    <option value="Select Department" disabled="">Select Department</option>
+                    <option  {% if employee.department == 'Front-Office' %} selected {% endif %} value="Front-Office">Front-Office</option>
                     <option {% if employee.department == 'Housekeeping' %} selected {% endif %} value="Housekeeping">Housekeeping</option>
                     <option {% if employee.department == 'Accounts' %} selected {% endif %} value="Accounts">Accounts</option>
                     <option {% if employee.department == 'Maintenance' %} selected {% endif %} value="Maintenance">Maintenance</option>

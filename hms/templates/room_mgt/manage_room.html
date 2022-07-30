@@ -52,24 +52,25 @@
 
 	<!-- Modal -->
 	<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-md">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Create New Staff</h5>
+	        <h5 class="modal-title" id="exampleModalLabel">Create New Room</h5>
+			<div class="alert alert-sm alert-danger mt-3 mx-2" role="alert" id="errBox"><strong id="errMsg"></strong></div>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
 	      	<!-- Form Layout -->
-	        <form class="grid" action="{% url 'addRoom' %}" method="POST">
+	        <form class="grid" action="{% url 'addRoom' %}" onsubmit="return validateRoomForm();"  method="POST">
 
 				{% csrf_token %}
 				
 				<div class="row mb-3">
 					<div class="col-md-4">
-						<input type="text" class="form-control" placeholder="Room Number" value="{{ room.room_num}}" name="roomNum">
+						<input type="text" class="form-control" placeholder="Room Number" value="{{ room.room_num}}" name="roomNum" id="roomNum">
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control" placeholder="Room Price" value="{{ room.room_price }}" name="roomPrice">
+						<input type="text" class="form-control" placeholder="Room Price" value="{{ room.room_price }}" name="roomPrice" id="roomPrice">
 					</div>
 				</div>
 				<div class="row mb-4">

@@ -4,6 +4,18 @@
 
 
 {% block content %}
+    
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags != 'warning' %}
+                <div class="alert alert-{{message.tags}} mb-3">
+                    {{message}}
+                </div>  
+            {% endif %}     
+        {% endfor %}
+    {% endif %}
+
+
 	<div class="d-flex justify-content-between">
 		<h2>Check-ins</h2>
 		<p><a href="#" class="btn btn-primary btn-block shadow-none staff-form-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa fa-plus"></i> New Check-in</a></p>
@@ -23,11 +35,7 @@
 	    </tr>
 	  </thead>
 	  <tbody class="table-body">
-        {% if messages %}
-            {% for message in messages %}
-                <td colspan="7" align="center"><b>{{message}}</b></td>
-            {% endfor %}
-        {% else %}
+        {% if checkins %}
             {% for checkin in checkins %}
             <tr>
             <th scope="row">{{checkin.checkin_id}}</th>
@@ -41,6 +49,14 @@
             </td>
             </tr>
             {% endfor %}
+        {% else %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'warning' %}
+                        <td colspan="7" align="center"><b>{{message}}</b></td>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         {% endif %}
 	  </tbody>
 	</table>
@@ -53,11 +69,12 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">Checkin New Guest</h5>
+            <div class="alert alert-danger mt-3 mx-5" id="errBox"><strong id="errMsg"></strong></div>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
 	      	<!-- Form Layout -->
-	        <form class="grid" action="{% url 'addCheckin' %}" method="POST">
+	        <form class="grid" action="{% url 'addCheckin' %}" onsubmit="return validateCheckinReserveForm();"  method="POST">
 
 				{% csrf_token %}
 				
@@ -67,19 +84,30 @@
 					<div class="col-md-6">
                         <h4 class="mb-2">Guest Details</h4>
                         <div class="row mb-3">
+                            <div class="col-md-12">
+                                <select class="form-select" name="guest_detail" id="guest_detail">
+                                    <option  value="Select Existing Guest" selected>Select Existing Guest</option>
+                                    {% for guest in guests %}
+                                        <option value="{{guest.guest_id}}">{{guest.first_name}} {{guest.last_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>            
+                        </div>
+
+                        <div class="row mb-3">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="First Name" name="firstName">
+                                <input type="text" class="form-control" placeholder="First Name" name="firstName" id="firstName">
                             </div> 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Last Name" name="lastName">
+                                <input type="text" class="form-control" placeholder="Last Name" name="lastName" id="lastName">
                             </div>            
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Phone Number" name="phone">
+                                <input type="text" class="form-control" placeholder="Phone Number" name="phone" id="phone">
                             </div> 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Address" name="Address">
+                                <input type="text" class="form-control" placeholder="Address" name="Address" id="Address">
                             </div>            
                         </div>
 					</div>
@@ -90,7 +118,7 @@
                         <div class="row mb-3">
                             <div class="col-md-5">
                                 <select class="form-select" name="roomType" id="roomType">
-                                    <option  selected disabled="">Select Room Type</option>
+                                    <option  value="Select Room Type" selected disabled="">Select Room Type</option>
                                     <option value="Single">Single</option>
                                     <option value="Double">Double</option>
                                     <option value="Deluxe">Deluxe</option>
@@ -100,7 +128,7 @@
                             </div> 
                             <div class="col-md-7">
                                 <select class="form-select" name="room" id="room">
-                                    <option  selected disabled="">Select Room</option>
+                                    <option  value="Select Room" selected disabled="">Select Room</option>
                                     {% for room in rooms %}
                                         <option value="{{room.room_num}}">{{room.room_num}}</option>
                                     {% endfor %}
@@ -110,7 +138,7 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <select class="form-select" name="no_of_persons" id="no_of_persons">
-                                    <option  selected disabled="">Select No of Persons</option>
+                                    <option  value="Select No of Persons" selected disabled="">Select No of Persons</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -126,15 +154,15 @@
                         <h4 class="mb-2">Card Details</h4>
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <input type="text" class="form-control" placeholder="Card Number" name="card_num">
+                                <input type="text" class="form-control" placeholder="Card Number" name="card_num" id="card_num">
                             </div>            
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="CVV" name="card_cvv">
+                                <input type="text" class="form-control" placeholder="CVV" name="card_cvv" id="card_cvv">
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="mm/yyyy" name="card_expiry">
+                                <input type="text" class="form-control" placeholder="mm/yyyy" name="card_expiry" id="card_expiry">
                             </div>         
                         </div>
                     </div>
@@ -156,7 +184,7 @@
                                 <input type="date" class="form-control" id="Checkin" placeholder="Checkin" name="Checkin">
                             </div>
                             <div class="col-md-6">
-                                <input type="date" class="form-control" placeholder="Checkout" name="Checkout">
+                                <input type="date" class="form-control" id="Checkout" placeholder="Checkout" name="Checkout">
                             </div>         
                         </div>
                     </div>
