@@ -52,7 +52,6 @@
                 <td>{{bill.checkout_date}}</td>
                 <td>{{bill.billing_date | date:"d/m/Y" }}</td>
                 <td align="center">
-                    <a href="#" class="btn btn-warning btn-block btn-sm shadow-none"><b>PRINT</b></a>
                     <a href="{% url 'deleteBill' bill.bill_id %}" class="btn btn-danger btn-block btn-sm shadow-none"><b><i class="fa fa-trash"></i></b></a>
                 </td>
                 </tr>
