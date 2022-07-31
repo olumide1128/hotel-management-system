@@ -1,0 +1,1462 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.6
+-- Dumped by pg_dump version 13.6
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_group (
+    id integer NOT NULL,
+    name character varying(150) NOT NULL
+);
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_group_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_group_id_seq OWNED BY public.auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_group_permissions (
+    id bigint NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_group_permissions_id_seq OWNED BY public.auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_permission_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_permission_id_seq OWNED BY public.auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(150) NOT NULL,
+    first_name character varying(150) NOT NULL,
+    last_name character varying(150) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_user_groups (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_user_groups_id_seq OWNED BY public.auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_user_id_seq OWNED BY public.auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auth_user_user_permissions (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auth_user_user_permissions_id_seq OWNED BY public.auth_user_user_permissions.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.django_admin_log_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.django_admin_log_id_seq OWNED BY public.django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.django_content_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.django_content_type_id_seq OWNED BY public.django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.django_migrations (
+    id bigint NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.django_migrations_id_seq OWNED BY public.django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: hms_billing; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hms_billing (
+    bill_id integer NOT NULL,
+    amount double precision NOT NULL,
+    checkin_date date NOT NULL,
+    checkout_date date NOT NULL,
+    billing_date date NOT NULL,
+    guest_id integer NOT NULL,
+    room_id integer NOT NULL
+);
+
+
+--
+-- Name: hms_billing_bill_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.hms_billing_bill_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hms_billing_bill_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.hms_billing_bill_id_seq OWNED BY public.hms_billing.bill_id;
+
+
+--
+-- Name: hms_checkins; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hms_checkins (
+    checkin_id integer NOT NULL,
+    checkin_date date NOT NULL,
+    checkout_date date NOT NULL,
+    "Num_of_persons" integer NOT NULL,
+    guest_id integer NOT NULL,
+    room_id integer NOT NULL
+);
+
+
+--
+-- Name: hms_checkins_checkin_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.hms_checkins_checkin_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hms_checkins_checkin_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.hms_checkins_checkin_id_seq OWNED BY public.hms_checkins.checkin_id;
+
+
+--
+-- Name: hms_employee; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hms_employee (
+    id bigint NOT NULL,
+    first_name character varying(50) NOT NULL,
+    last_name character varying(50) NOT NULL,
+    email character varying(50) NOT NULL,
+    "Address" character varying(150) NOT NULL,
+    dob date NOT NULL,
+    department character varying(15) NOT NULL,
+    access_granted boolean NOT NULL
+);
+
+
+--
+-- Name: hms_employee_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.hms_employee_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hms_employee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.hms_employee_id_seq OWNED BY public.hms_employee.id;
+
+
+--
+-- Name: hms_guest; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hms_guest (
+    guest_id integer NOT NULL,
+    first_name character varying(50) NOT NULL,
+    last_name character varying(50) NOT NULL,
+    phone character varying(50) NOT NULL,
+    "Address" character varying(150) NOT NULL,
+    card_num character varying(50) NOT NULL,
+    card_cvv character varying(10) NOT NULL,
+    card_expiry character varying(20) NOT NULL
+);
+
+
+--
+-- Name: hms_guest_guest_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.hms_guest_guest_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hms_guest_guest_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.hms_guest_guest_id_seq OWNED BY public.hms_guest.guest_id;
+
+
+--
+-- Name: hms_reservation; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hms_reservation (
+    reserve_id integer NOT NULL,
+    checkin_date date NOT NULL,
+    checkout_date date NOT NULL,
+    "Num_of_persons" integer NOT NULL,
+    guest_id integer NOT NULL,
+    room_id integer NOT NULL
+);
+
+
+--
+-- Name: hms_reservation_reserve_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.hms_reservation_reserve_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hms_reservation_reserve_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.hms_reservation_reserve_id_seq OWNED BY public.hms_reservation.reserve_id;
+
+
+--
+-- Name: hms_room; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hms_room (
+    room_num integer NOT NULL,
+    room_type character varying(15) NOT NULL,
+    room_price double precision NOT NULL,
+    room_status character varying(15) NOT NULL
+);
+
+
+--
+-- Name: auth_group id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group ALTER COLUMN id SET DEFAULT nextval('public.auth_group_id_seq'::regclass);
+
+
+--
+-- Name: auth_group_permissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: auth_permission id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_permission ALTER COLUMN id SET DEFAULT nextval('public.auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: auth_user id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user ALTER COLUMN id SET DEFAULT nextval('public.auth_user_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups ALTER COLUMN id SET DEFAULT nextval('public.auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_user_permissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: django_admin_log id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_admin_log ALTER COLUMN id SET DEFAULT nextval('public.django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: django_content_type id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_content_type ALTER COLUMN id SET DEFAULT nextval('public.django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: django_migrations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_migrations ALTER COLUMN id SET DEFAULT nextval('public.django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: hms_billing bill_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_billing ALTER COLUMN bill_id SET DEFAULT nextval('public.hms_billing_bill_id_seq'::regclass);
+
+
+--
+-- Name: hms_checkins checkin_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_checkins ALTER COLUMN checkin_id SET DEFAULT nextval('public.hms_checkins_checkin_id_seq'::regclass);
+
+
+--
+-- Name: hms_employee id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_employee ALTER COLUMN id SET DEFAULT nextval('public.hms_employee_id_seq'::regclass);
+
+
+--
+-- Name: hms_guest guest_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_guest ALTER COLUMN guest_id SET DEFAULT nextval('public.hms_guest_guest_id_seq'::regclass);
+
+
+--
+-- Name: hms_reservation reserve_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_reservation ALTER COLUMN reserve_id SET DEFAULT nextval('public.hms_reservation_reserve_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can view log entry	1	view_logentry
+5	Can add permission	2	add_permission
+6	Can change permission	2	change_permission
+7	Can delete permission	2	delete_permission
+8	Can view permission	2	view_permission
+9	Can add group	3	add_group
+10	Can change group	3	change_group
+11	Can delete group	3	delete_group
+12	Can view group	3	view_group
+13	Can add user	4	add_user
+14	Can change user	4	change_user
+15	Can delete user	4	delete_user
+16	Can view user	4	view_user
+17	Can add content type	5	add_contenttype
+18	Can change content type	5	change_contenttype
+19	Can delete content type	5	delete_contenttype
+20	Can view content type	5	view_contenttype
+21	Can add session	6	add_session
+22	Can change session	6	change_session
+23	Can delete session	6	delete_session
+24	Can view session	6	view_session
+25	Can add employee	7	add_employee
+26	Can change employee	7	change_employee
+27	Can delete employee	7	delete_employee
+28	Can view employee	7	view_employee
+29	Can add room	8	add_room
+30	Can change room	8	change_room
+31	Can delete room	8	delete_room
+32	Can view room	8	view_room
+33	Can add guest	9	add_guest
+34	Can change guest	9	change_guest
+35	Can delete guest	9	delete_guest
+36	Can view guest	9	view_guest
+37	Can add reservation	10	add_reservation
+38	Can change reservation	10	change_reservation
+39	Can delete reservation	10	delete_reservation
+40	Can view reservation	10	view_reservation
+41	Can add checkins	11	add_checkins
+42	Can change checkins	11	change_checkins
+43	Can delete checkins	11	delete_checkins
+44	Can view checkins	11	view_checkins
+45	Can add billing	12	add_billing
+46	Can change billing	12	change_billing
+47	Can delete billing	12	delete_billing
+48	Can view billing	12	view_billing
+\.
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+9	pbkdf2_sha256$320000$REP3ksur5UBMpTIoMKdxLO$BEilBUcGpKfpq377tF8/jCO63lPKJkuMNWT835kJkt4=	2022-07-29 09:06:11.658487+01	f	Krowland	Kelly	Rowland	olumide.oyegoke@yahoo.com	f	t	2022-07-22 11:11:12.268502+01
+1	pbkdf2_sha256$320000$jy4D4xozEpNtIdcNSXTcag$EsE4GqaZgHWcDIm4opTRubBDXnXE4649kQk0HQDrDpw=	2022-07-31 16:47:19.561955+01	t	admin			admin@gmail.com	t	t	2022-07-01 20:44:33.48882+01
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2022-07-02 21:08:20.791474+01	1	Employee object (1)	1	[{"added": {}}]	7	1
+2	2022-07-02 21:13:26.052102+01	2	Employee object (2)	1	[{"added": {}}]	7	1
+3	2022-07-02 21:14:33.531263+01	3	Employee object (3)	1	[{"added": {}}]	7	1
+4	2022-07-02 21:16:45.806729+01	4	Employee object (4)	1	[{"added": {}}]	7	1
+5	2022-07-02 21:19:41.303592+01	5	Kennedy Paul	1	[{"added": {}}]	7	1
+6	2022-07-02 23:10:15.862291+01	6	David Ryan	1	[{"added": {}}]	7	1
+7	2022-07-15 19:37:32.279546+01	7	Kelly Rowland	2	[{"changed": {"fields": ["Department"]}}]	7	1
+8	2022-07-16 08:25:32.289249+01	1	Room 1	1	[{"added": {}}]	8	1
+9	2022-07-16 08:25:58.576673+01	1	Room 1	3		8	1
+10	2022-07-16 08:27:17.159025+01	100	Room 100	1	[{"added": {}}]	8	1
+11	2022-07-16 08:27:55.395134+01	101	Room 101	1	[{"added": {}}]	8	1
+12	2022-07-16 08:28:05.701179+01	102	Room 102	1	[{"added": {}}]	8	1
+13	2022-07-16 08:28:18.625474+01	103	Room 103	1	[{"added": {}}]	8	1
+14	2022-07-16 08:28:28.914501+01	104	Room 104	1	[{"added": {}}]	8	1
+15	2022-07-16 08:28:49.975885+01	105	Room 105	1	[{"added": {}}]	8	1
+16	2022-07-16 08:29:06.853877+01	106	Room 106	1	[{"added": {}}]	8	1
+17	2022-07-16 08:29:21.052691+01	107	Room 107	1	[{"added": {}}]	8	1
+18	2022-07-16 08:29:42.815213+01	108	Room 108	1	[{"added": {}}]	8	1
+19	2022-07-16 08:30:07.511305+01	109	Room 109	1	[{"added": {}}]	8	1
+20	2022-07-16 08:30:54.587406+01	200	Room 200	1	[{"added": {}}]	8	1
+21	2022-07-16 08:31:03.049867+01	201	Room 201	1	[{"added": {}}]	8	1
+22	2022-07-16 08:31:12.953235+01	202	Room 202	1	[{"added": {}}]	8	1
+23	2022-07-16 08:31:25.964613+01	203	Room 203	1	[{"added": {}}]	8	1
+24	2022-07-16 08:31:36.382802+01	204	Room 204	1	[{"added": {}}]	8	1
+25	2022-07-16 08:31:48.364431+01	205	Room 205	1	[{"added": {}}]	8	1
+26	2022-07-16 08:31:58.116384+01	206	Room 206	1	[{"added": {}}]	8	1
+27	2022-07-16 08:32:14.215228+01	207	Room 207	1	[{"added": {}}]	8	1
+28	2022-07-16 08:32:28.069209+01	208	Room 208	1	[{"added": {}}]	8	1
+29	2022-07-16 08:32:41.665997+01	209	Room 209	1	[{"added": {}}]	8	1
+30	2022-07-16 08:33:08.986958+01	300	Room 300	1	[{"added": {}}]	8	1
+31	2022-07-16 08:33:24.022527+01	301	Room 301	1	[{"added": {}}]	8	1
+32	2022-07-16 08:33:36.350656+01	302	Room 302	1	[{"added": {}}]	8	1
+33	2022-07-16 08:33:45.040488+01	303	Room 303	1	[{"added": {}}]	8	1
+34	2022-07-16 08:33:52.967425+01	304	Room 304	1	[{"added": {}}]	8	1
+35	2022-07-16 08:34:02.254087+01	305	Room 305	1	[{"added": {}}]	8	1
+36	2022-07-16 08:34:14.315246+01	306	Room 306	1	[{"added": {}}]	8	1
+37	2022-07-16 08:34:28.795725+01	307	Room 307	1	[{"added": {}}]	8	1
+38	2022-07-16 08:34:44.102392+01	308	Room 308	1	[{"added": {}}]	8	1
+39	2022-07-16 08:34:57.921861+01	309	Room 309	1	[{"added": {}}]	8	1
+40	2022-07-19 17:47:25.420573+01	1	Id: 1, FullName: John Doe	1	[{"added": {}}]	9	1
+41	2022-07-19 17:50:17.284822+01	1	Reserve Id: 1, Reservation for Room 106	1	[{"added": {}}]	10	1
+42	2022-07-19 18:20:38.909361+01	2	Kate Simon	1	[{"added": {}}]	9	1
+43	2022-07-19 18:22:08.606965+01	2	Reserve Id: 2, Reservation for Room 201	1	[{"added": {}}]	10	1
+44	2022-07-22 13:02:46.237738+01	1	Billing for Guest Id: 2 and Room Num: 106	3		12	1
+45	2022-07-22 13:13:30.760873+01	2	Billing for Guest Id: 1 and Room Num: 101	3		12	1
+46	2022-07-22 13:31:48.82122+01	202	Room 202	2	[{"changed": {"fields": ["Room status"]}}]	8	1
+\.
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	auth	user
+5	contenttypes	contenttype
+6	sessions	session
+7	hms	employee
+8	hms	room
+9	hms	guest
+10	hms	reservation
+11	hms	checkins
+12	hms	billing
+\.
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2022-07-01 20:41:19.775678+01
+2	auth	0001_initial	2022-07-01 20:41:20.959563+01
+3	admin	0001_initial	2022-07-01 20:41:21.193957+01
+4	admin	0002_logentry_remove_auto_add	2022-07-01 20:41:21.209558+01
+5	admin	0003_logentry_add_action_flag_choices	2022-07-01 20:41:21.225182+01
+6	contenttypes	0002_remove_content_type_name	2022-07-01 20:41:21.272056+01
+7	auth	0002_alter_permission_name_max_length	2022-07-01 20:41:21.287679+01
+8	auth	0003_alter_user_email_max_length	2022-07-01 20:41:21.303305+01
+9	auth	0004_alter_user_username_opts	2022-07-01 20:41:21.318929+01
+10	auth	0005_alter_user_last_login_null	2022-07-01 20:41:21.350179+01
+11	auth	0006_require_contenttypes_0002	2022-07-01 20:41:21.397063+01
+12	auth	0007_alter_validators_add_error_messages	2022-07-01 20:41:21.412677+01
+13	auth	0008_alter_user_username_max_length	2022-07-01 20:41:21.490823+01
+14	auth	0009_alter_user_last_name_max_length	2022-07-01 20:41:21.506424+01
+15	auth	0010_alter_group_name_max_length	2022-07-01 20:41:21.522048+01
+16	auth	0011_update_proxy_permissions	2022-07-01 20:41:21.53767+01
+17	auth	0012_alter_user_first_name_max_length	2022-07-01 20:41:21.553298+01
+18	sessions	0001_initial	2022-07-01 20:41:21.773409+01
+19	hms	0001_initial	2022-07-02 21:04:30.287917+01
+20	hms	0002_employee_access_granted	2022-07-15 19:46:19.495025+01
+21	hms	0003_room	2022-07-16 08:22:40.810734+01
+22	hms	0004_alter_room_room_num	2022-07-16 08:26:23.460037+01
+23	hms	0005_guest_reservation	2022-07-19 17:40:41.452569+01
+24	hms	0006_checkins	2022-07-20 18:54:49.250816+01
+25	hms	0007_billing	2022-07-22 12:03:17.840313+01
+26	hms	0008_remove_billing_num_of_persons	2022-07-22 12:27:21.029998+01
+27	hms	0009_alter_billing_billing_date	2022-07-22 13:07:56.325003+01
+\.
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+dj3lcaa2dsk480u7fp70bqrmn37b2260	.eJxVjDsOwjAQBe_iGlm2119Kes5g7fqDA8iR4qRC3B0ipYD2zcx7sYjb2uI2yhKnzM5MstPvRpgepe8g37HfZp7mvi4T8V3hBx38OufyvBzu30HD0b61FQFqpmoUGaW8TqCVTwULhYpA1RkHpjqQ6FBQEJCM9tIhWAWgimXvD-O5N2w:1oG25N:1YdVVsBCgHhPOsyIJdI-_YPWVDg0Ui5F_StGmJz3lm8	2022-08-08 18:41:41.609819+01
+fastk5lblft1xsi5l1pw886pq3ck0j86	.eJxVjDsOwjAQBe_iGlm2119Kes5g7fqDA8iR4qRC3B0ipYD2zcx7sYjb2uI2yhKnzM5MstPvRpgepe8g37HfZp7mvi4T8V3hBx38OufyvBzu30HD0b61FQFqpmoUGaW8TqCVTwULhYpA1RkHpjqQ6FBQEJCM9tIhWAWgimXvD-O5N2w:1oGUYY:4gQTNQKWPX6XqGcZIbRDVLw9pod95Jf7O7OfDbuB4pM	2022-08-10 01:05:42.975156+01
+fm9tmx79c4slhisn7s2zbazvun136brc	.eJxVjDsOwjAQBe_iGlm2119Kes5g7fqDA8iR4qRC3B0ipYD2zcx7sYjb2uI2yhKnzM5MstPvRpgepe8g37HfZp7mvi4T8V3hBx38OufyvBzu30HD0b61FQFqpmoUGaW8TqCVTwULhYpA1RkHpjqQ6FBQEJCM9tIhWAWgimXvD-O5N2w:1oIB9z:fi3CpxxEgl2rMSHS_HLQDJcz2lAZzOaQrWLuOh_qaw0	2022-08-14 16:47:19.597031+01
+\.
+
+
+--
+-- Data for Name: hms_billing; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.hms_billing (bill_id, amount, checkin_date, checkout_date, billing_date, guest_id, room_id) FROM stdin;
+11	90	2022-07-22	2022-07-23	2022-07-23	2	205
+13	150	2022-07-21	2022-07-23	2022-07-23	4	201
+15	75	2022-07-16	2022-07-17	2022-07-17	3	100
+\.
+
+
+--
+-- Data for Name: hms_checkins; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.hms_checkins (checkin_id, checkin_date, checkout_date, "Num_of_persons", guest_id, room_id) FROM stdin;
+14	2022-07-24	2022-07-26	2	4	203
+16	2022-07-25	2022-07-26	2	5	303
+\.
+
+
+--
+-- Data for Name: hms_employee; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.hms_employee (id, first_name, last_name, email, "Address", dob, department, access_granted) FROM stdin;
+4	Debbie	Luis	olumide.oyegoke@yahoo.com	32, Bromain St, Dublin 7, Ireland	1989-03-04	Housekeeping	f
+6	David	Ryan	olumide.oyegoke@yahoo.com	36, Collins St, Dublin, Ireland	1983-01-08	Maintenance	f
+1	John	Doe	olumide.oyegoke@yahoo.com	5, Santry Avenue, Dublin, Ireland	1984-10-06	Accounts	f
+8	Betty	Sina	olumide.oyegoke@yahoo.com	8, Kingley Avenue, Dublin	1989-05-17	Housekeeping	f
+5	Kennedy	Paul	olumide.oyegoke@yahoo.com	8, Kessignton Close, Dublin, Ireland	1981-11-19	Front-Office	f
+7	Kelly	Rowland	olumide.oyegoke@yahoo.com	18, George Street, Dublin	1990-06-13	Front-Office	t
+2	Sarah	White	olumide.oyegoke@yahoo.com	3, Johnson St, Dublin , Ireland	1991-07-15	Front-Office	f
+\.
+
+
+--
+-- Data for Name: hms_guest; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.hms_guest (guest_id, first_name, last_name, phone, "Address", card_num, card_cvv, card_expiry) FROM stdin;
+1	John	Doe	0892221118	4, Kings Avenue, Dublin, Ireland	4242424242424242	342	11/2027
+2	Kate	Simon	08922221111	66, Jay Street, Ireland	4242424242424242	257	08/2035
+3	Ade	Komolafe	0862221177	41, Phibsborough, Dublin	4242424242424242	317	08/2044
+4	Ronaldo	Silva	0872229990	33, Dunlaoighe Avenue, Dublin	4242424242424242	281	03/2034
+5	Tom	Cruise	0872009221	18, Tom Avenue, Dublin, Ireland	4242424242424242	276	02/2028
+6	Ayo	Komolafe	0873332213	18, Tom Avenue, Dublin, Ireland	4242424242424242	521	08/2037
+\.
+
+
+--
+-- Data for Name: hms_reservation; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.hms_reservation (reserve_id, checkin_date, checkout_date, "Num_of_persons", guest_id, room_id) FROM stdin;
+9	2022-07-24	2022-07-26	1	4	202
+10	2022-07-24	2022-07-26	1	3	300
+\.
+
+
+--
+-- Data for Name: hms_room; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.hms_room (room_num, room_type, room_price, room_status) FROM stdin;
+203	Double	90	Occupied
+102	Single	75	Available
+103	Double	90	Available
+105	Deluxe	189	Available
+109	Executive	230	Available
+200	Single	75	Available
+204	Double	90	Available
+207	Twin	92	Available
+208	Deluxe	189	Available
+301	Single	75	Available
+302	Single	75	Available
+305	Double	90	Available
+306	Twin	92	Available
+307	Deluxe	189	Available
+201	Single	75	Dirty
+205	Double	90	Available
+309	Executive	230	Available
+303	Double	90	Occupied
+206	Twin	92	Available
+300	Single	75	Booked
+209	Deluxe	189	Dirty
+107	Twin	92	Available
+108	Deluxe	189	Available
+100	Single	75	Dirty
+308	Executive	230	Available
+106	Twin	92	Available
+101	Single	75	Available
+104	Double	90	Available
+304	Double	90	Available
+202	Single	75	Booked
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 48, true);
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_user_id_seq', 9, true);
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 46, true);
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 12, true);
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 27, true);
+
+
+--
+-- Name: hms_billing_bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.hms_billing_bill_id_seq', 15, true);
+
+
+--
+-- Name: hms_checkins_checkin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.hms_checkins_checkin_id_seq', 17, true);
+
+
+--
+-- Name: hms_employee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.hms_employee_id_seq', 12, true);
+
+
+--
+-- Name: hms_guest_guest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.hms_guest_guest_id_seq', 6, true);
+
+
+--
+-- Name: hms_reservation_reserve_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.hms_reservation_reserve_id_seq', 10, true);
+
+
+--
+-- Name: auth_group auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_group_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_permission_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: hms_billing hms_billing_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_billing
+    ADD CONSTRAINT hms_billing_pkey PRIMARY KEY (bill_id);
+
+
+--
+-- Name: hms_checkins hms_checkins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_checkins
+    ADD CONSTRAINT hms_checkins_pkey PRIMARY KEY (checkin_id);
+
+
+--
+-- Name: hms_employee hms_employee_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_employee
+    ADD CONSTRAINT hms_employee_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: hms_guest hms_guest_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_guest
+    ADD CONSTRAINT hms_guest_pkey PRIMARY KEY (guest_id);
+
+
+--
+-- Name: hms_reservation hms_reservation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_reservation
+    ADD CONSTRAINT hms_reservation_pkey PRIMARY KEY (reserve_id);
+
+
+--
+-- Name: hms_room hms_room_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_room
+    ADD CONSTRAINT hms_room_pkey PRIMARY KEY (room_num);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON public.auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON public.auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON public.auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id_97559544; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_groups_group_id_97559544 ON public.auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_groups_user_id_6a12ed8b ON public.auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_1fbb5f2c; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id_1fbb5f2c ON public.auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_user_permissions_user_id_a95ead1b ON public.auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON public.auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON public.django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX django_session_expire_date_a5c62663 ON public.django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: hms_billing_guest_id_83c31165; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX hms_billing_guest_id_83c31165 ON public.hms_billing USING btree (guest_id);
+
+
+--
+-- Name: hms_billing_room_id_9adbab1f; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX hms_billing_room_id_9adbab1f ON public.hms_billing USING btree (room_id);
+
+
+--
+-- Name: hms_checkins_guest_id_40ac4173; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX hms_checkins_guest_id_40ac4173 ON public.hms_checkins USING btree (guest_id);
+
+
+--
+-- Name: hms_checkins_room_id_742a0ba5; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX hms_checkins_room_id_742a0ba5 ON public.hms_checkins USING btree (room_id);
+
+
+--
+-- Name: hms_reservation_guest_id_3049c95c; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX hms_reservation_guest_id_3049c95c ON public.hms_reservation USING btree (guest_id);
+
+
+--
+-- Name: hms_reservation_room_id_ea095752; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX hms_reservation_room_id_ea095752 ON public.hms_reservation USING btree (room_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: hms_billing hms_billing_guest_id_83c31165_fk_hms_guest_guest_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_billing
+    ADD CONSTRAINT hms_billing_guest_id_83c31165_fk_hms_guest_guest_id FOREIGN KEY (guest_id) REFERENCES public.hms_guest(guest_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: hms_billing hms_billing_room_id_9adbab1f_fk_hms_room_room_num; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_billing
+    ADD CONSTRAINT hms_billing_room_id_9adbab1f_fk_hms_room_room_num FOREIGN KEY (room_id) REFERENCES public.hms_room(room_num) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: hms_checkins hms_checkins_guest_id_40ac4173_fk_hms_guest_guest_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_checkins
+    ADD CONSTRAINT hms_checkins_guest_id_40ac4173_fk_hms_guest_guest_id FOREIGN KEY (guest_id) REFERENCES public.hms_guest(guest_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: hms_checkins hms_checkins_room_id_742a0ba5_fk_hms_room_room_num; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_checkins
+    ADD CONSTRAINT hms_checkins_room_id_742a0ba5_fk_hms_room_room_num FOREIGN KEY (room_id) REFERENCES public.hms_room(room_num) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: hms_reservation hms_reservation_guest_id_3049c95c_fk_hms_guest_guest_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_reservation
+    ADD CONSTRAINT hms_reservation_guest_id_3049c95c_fk_hms_guest_guest_id FOREIGN KEY (guest_id) REFERENCES public.hms_guest(guest_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: hms_reservation hms_reservation_room_id_ea095752_fk_hms_room_room_num; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hms_reservation
+    ADD CONSTRAINT hms_reservation_room_id_ea095752_fk_hms_room_room_num FOREIGN KEY (room_id) REFERENCES public.hms_room(room_num) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
