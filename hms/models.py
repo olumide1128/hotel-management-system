@@ -48,6 +48,8 @@ class Room(models.Model):
 		('Occupied','Occupied'),
 		('Dirty','Dirty'),
 		('Booked','Booked'),
+		('Maintenance','Maintenance'),
+		('Inactive','Inactive')
 	]
 
 

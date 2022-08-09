@@ -256,11 +256,13 @@ def update_room_view(request, id):
 		roomNum = int(request.POST.get('roomNum'))
 		roomPrice = float(request.POST.get('roomPrice'))
 		roomType = request.POST.get('roomType')
+		roomStatus = request.POST.get('roomStatus')
 
 		old = Room.objects.get(room_num=id)
 		old.room_num = roomNum
 		old.room_price = roomPrice
 		old.room_type = roomType
+		old.room_status = roomStatus
 
 		old.save()
 		return redirect('/room_mgt')

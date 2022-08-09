@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <select class="form-select" name="roomType" id="roomType">
                     <option disabled="">Select Room Type</option>
                     <option  {% if room.room_type == 'Single' %} selected {% endif %} value="Single">Single</option>
@@ -33,6 +33,16 @@
                     <option {% if room.room_type == 'Deluxe' %} selected {% endif %} value="Deluxe">Deluxe</option>
                     <option {% if room.room_type == 'Twin' %} selected {% endif %} value="Twin">Twin</option>
                     <option {% if room.room_type == 'Executive' %} selected {% endif %} value="Executive">Executive</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <select class="form-select" name="roomStatus" id="roomStatus">
+                    <option  {% if room.room_status == 'Available' %} selected {% endif %} value="Available">Available</option>
+                    <option {% if room.room_status == 'Dirty' %} selected {% endif %} value="Dirty">Dirty</option>
+                    <option {% if room.room_status == 'Occupied' %} selected {% endif %} value="Occupied">Occupied</option>
+                    <option {% if room.room_status == 'Booked' %} selected {% endif %} value="Booked">Booked</option>
+                    <option {% if room.room_status == 'Maintenance' %} selected {% endif %} value="Maintenance">Maintenance</option>
+                    <option {% if room.room_status == 'Inactive' %} selected {% endif %} value="Inactive">Inactive</option>
                 </select>
             </div>
         </div>
