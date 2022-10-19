@@ -1,9 +1,9 @@
 
-*** WEBSITE LINK ***
+# WEBSITE LINK
 https://noble-hms.herokuapp.com
 
 
-*** LOGIN DETAILS ***
+## LOGIN DETAILS
 
 - ADMIN LOGIN -
 	username: admin
@@ -18,3 +18,7 @@ https://noble-hms.herokuapp.com
 	password: lJmE63
 
 
+<<<<<<< HEAD
+=======
+#### VIDEO PRESENTATION LINK
+>>>>>>> 5c817dbcbc26c649e6ca45d2530bff1321742e21
