@@ -111,7 +111,7 @@ class Checkins(models.Model):
 
 		amount = price * duration
 
-		bill_amount = amount + 10 #10 for tax
+		bill_amount = amount
 		return bill_amount
 
 
