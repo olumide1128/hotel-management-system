@@ -18,7 +18,3 @@ https://noble-hms.herokuapp.com
 	password: lJmE63
 
 
-<<<<<<< HEAD
-=======
-#### VIDEO PRESENTATION LINK
->>>>>>> 5c817dbcbc26c649e6ca45d2530bff1321742e21
